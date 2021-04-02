@@ -15,10 +15,26 @@ template <typename R, typename... Args> // R = return value, ...Args = arg Types
 class Cache
 {
 public:
-	Cache(); // Cache constructor
+	Cache(){}; // Cache constructor
 
-	R &get_from_cache(Args... args);			  // Returns cached value (if exists)
-	void set_in_cache(R returning, Args... args); // Inserts args and returning value into the cache
+	// Returns cached value (if exists)
+	R &get_from_cache(Args... args)
+	{
+		auto possible_value = m_value_map.find(std::make_tuple(args...)); // (possibly) get value from map
+
+		if (possible_value == m_value_map.end()) // if value does not exist yet
+		{
+			throw;
+		}
+
+		return m_value_map[std::make_tuple(args...)];
+	}
+
+	// Inserts args and returning value into the cache
+	void set_in_cache(R returning, Args... args)
+	{
+		m_value_map.insert(std::map<std::tuple<Args...>, R>::value_type(std::make_tuple(args...), returning));
+	}
 
 private:
 	std::map<std::tuple<Args...>, R> m_value_map; // Map that maps function args to return values
