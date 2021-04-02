@@ -8,7 +8,7 @@ project "memoize"
 	language "C++"
 	
 	files { "lib/**.cpp", "lib/**.h", "include/**.h" }
-	
+	includedirs { "./include" }
 	
 	filter "configurations:Debug"
 	  defines { "DEBUG" }
@@ -20,12 +20,14 @@ project "memoize"
 
 
 
-
 project "memoizeTests"
 	kind "ConsoleApp"
 	language "C++"
 
 	files { "tests/**.cpp", "tests/**.cpp"  }
+	includedirs { "./include" }
+	libdirs { "bin/Release" }
+	links { "memoize.lib" }
 
 	filter "configurations:Debug"
 	  defines { "DEBUG" }

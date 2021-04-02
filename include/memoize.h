@@ -8,4 +8,6 @@
 #ifndef MEMOIZE_H
 #define MEMOIZE_H
 
+void test();
+
 #endif
