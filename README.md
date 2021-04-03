@@ -44,7 +44,8 @@ int fib(uint32_t x) // standard fib algo
   if (x <= 1)
     return 1;
   else
-    return fib_runner->Run(x - 1) + fib_runner->Run(x - 2); // Recurse using fib_memo rather than just fib()
+    // Recurse using fib_memo rather than just fib()
+    return fib_runner->Run(x - 1) + fib_runner->Run(x - 2);
 }
 
 int main(int argc, char **argv)
