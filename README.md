@@ -32,31 +32,26 @@ int main()
 
 ```c++
 #include <iostream>
-#include <memoize.h>
+#include "memoize.h"
+
+typedef memoize_runner<int, uint32_t> fib_runner;
+
+static fib_runner *fib_memo;
 
 int fib(uint32_t x)
 {
-    if (x == 0 || x == 1)
-        return 1;
-    else
-        return fib(x - 1) + fib(x - 2);
-}
-
-int fib_with_memo(uint32_t x, memoize_runner<int, uint32_t> *runner)
-{
-    if (x == 0 || x == 1)
-        return 1;
-    else
-        return runner->run(x - 1) + runner->run(x - 2);
+	if (x == 0 || x == 1)
+		return 1;
+	else
+		return fib_memo->run(x - 1) + fib_memo->run(x - 2);
 }
 
 void test()
 {
-    memoize_runner<int, uint32_t> fib_memo_runner(fib);
+	fib_memo = new fib_runner<int, uint32_t>(fib);
 
-    int output = fib_with_memo(6, &fib_memo_runner);
+	auto output = fib_memo->run(6);
 
-    // should be thirteen
-    std::cout << output << std::endl; 
+	std::cout << output << std::endl; // should be thirteen
 }
 ```
