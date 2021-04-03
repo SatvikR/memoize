@@ -20,6 +20,8 @@ void test()
     auto output = fib_memo->run(8);
 
     std::cout << output << std::endl; // should be thirteen
+
+    delete fib_memo;
 }
 
 int main(int argc, char **argv)

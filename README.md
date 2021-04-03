@@ -53,5 +53,7 @@ int main()
 	auto output = fib_memo->run(6);
 
 	std::cout << output << std::endl; // should be thirteen
+
+    delete fib_memo;
 }
 ```
