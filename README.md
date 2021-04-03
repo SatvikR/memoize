@@ -34,7 +34,7 @@ int main()
 #include <iostream>
 #include <memoize.h>
 
-typedef <int, uint32_t> MemoizeRunner fib_runner;
+typedef MemoizeRunner<int, uint32_t> fib_runner;
 
 static fib_runner *fib_memo;
 
