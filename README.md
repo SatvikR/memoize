@@ -23,7 +23,7 @@ int main()
     // first int is return type, second two are arg types
     MemoizeRunner<int, int, int> add_runner(add);
 
-    // Prints 5
+    // Prints 10
     std::cout << add_runner.Run(5, 5) << std::endl;
 }
 ```
