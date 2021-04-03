@@ -19,7 +19,7 @@ class _Missed_Cache_Exception : public std::exception
     {
         return "Memoized value not in cache";
     }
-} _m_c_exception;
+};
 
 // The Cache class holds individual caches for each function that is memoized
 template <typename R, typename... Args> // R = return value, ...Args = arg Types
@@ -35,7 +35,7 @@ public:
 
         if (possible_value == m_value_map.end()) // if value does not exist yet
         {
-            throw _m_c_exception;
+            throw _Missed_Cache_Exception();
         }
 
         return possible_value->second; // Return value from iterator (possible_value)
