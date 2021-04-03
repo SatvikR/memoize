@@ -46,7 +46,7 @@ int fib(uint32_t x)
 		return fib_memo->run(x - 1) + fib_memo->run(x - 2);
 }
 
-void test()
+int main()
 {
 	fib_memo = new fib_runner<int, uint32_t>(fib);
 
