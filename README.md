@@ -32,28 +32,33 @@ int main()
 
 ```c++
 #include <iostream>
-#include <memoize.h>
+#include "memoize.h"
 
-typedef MemoizeRunner<int, uint32_t> fib_runner;
+// static MemoizeRunner to be used throughout this file.
+// If you want your MemoizeRunner to be fully global,
+// declare it as extern in a header, and define it somewhere else.
+static MemoizeRunner<int, uint32_t> *fib_runner;
 
-static fib_runner *fib_memo;
-
-int fib(uint32_t x)
+int fib(uint32_t x) // standard fib algo
 {
-    if (x == 0 || x == 1)
-        return 1;
-    else
-        return fib_memo->Run(x - 1) + fib_memo->Run(x - 2);
+  if (x <= 1)
+    return 1;
+  else
+    return fib_runner->Run(x - 1) + fib_runner->Run(x - 2); // Recurse using fib_memo rather than just fib()
 }
 
-int main()
+int main(int argc, char **argv)
 {
-    fib_memo = new fib_runner(fib);
+  fib_runner = new MemoizeRunner<int, uint32_t>(fib);
 
-    auto output = fib_memo->Run(8);
+  auto output = fib_runner->Run(45);
 
-    std::cout << output << std::endl; // should be thirty four
+  std::cout << output << std::endl;
+  // prints 1836311903
+  // Stats: tldr; memoized is ~97% faster
+  // Memoized fib with 45 as an arg runs in 0.25 seconds! (win 10, 6 core CPU, 16gb RAM, release mode)
+  // Non memoized fib with 45 as an arg runs in 7.8 seconds (same PC specs, still release mode)
 
-    delete fib_memo;
+  delete fib_runner;
 }
 ```
