@@ -10,33 +10,44 @@
 
 #include "cache.h"
 
-typedef void (*raw_function)(void);
-
-// Class used to map function pointers to caches
-class _Function_Cache_Map
+// memoize_runner will create an object to run your function in a memoized manner
+// R: returning type, Args: arg types
+template <typename R, typename... Args>
+class memoize_runner
 {
 public:
-    _Function_Cache_Map(){}; // No constructor
-
-    ~_Function_Cache_Map()
+    memoize_runner(R (*p_func)(Args...))
     {
-        for (std::map<raw_function, void *>::iterator it = m_function_map.begin(); it != m_function_map.end(); ++it)
+        m_cache = new _Cache<R, Args...>; // Intialize cache with template types
+        m_p_func = p_func;                // Create reference to function pointer to use
+    }
+
+    ~memoize_runner()
+    {
+        delete m_cache;
+    }
+
+    R run(Args... args)
+    {
+        R returning;
+
+        try
         {
-            // _Cache **c_ptr = static_cast<_Cache **>(it->second);
+            returning = m_cache->get_from_cache(args...); // Try to get value from cache
         }
-    };
+        catch (const std::exception &e)
+        {
+            returning = m_p_func(args...);             // Call function
+            m_cache->set_in_cache(returning, args...); // cache value
+        }
+
+        return returning;
+    }
 
 private:
-    // Pointer must be void to make sure there is only one _Function_Cache_Map at any time
-    std::map<raw_function, void *> m_function_map;
+    _Cache<R, Args...> *m_cache; // Cache for the memozied function
+    R(*m_p_func)                 // Function pointing to memo'd function
+    (Args...);
 };
-
-// Function that returns the output of the function call from the cache if it exists,
-// Or just runs the function and sets it in the cache if it does not yet exist
-// R: return type, Args: arg types in order
-template <typename R, typename... Args>
-R memoized(raw_function func, Args... args)
-{
-}
 
 #endif

@@ -1,38 +1,33 @@
 #include <iostream>
 #include "memoize.h"
 
+int fib(uint32_t x)
+{
+	if (x == 0 || x == 1)
+		return 1;
+	else
+		return fib(x - 1) + fib(x - 2);
+}
+
+int fib_with_memo(uint32_t x, memoize_runner<int, uint32_t> *runner)
+{
+	if (x == 0 || x == 1)
+		return 1;
+	else
+		return runner->run(x - 1) + runner->run(x - 2);
+}
+
 void test()
 {
-	auto c = _Cache<int, int, int>();
+	memoize_runner<int, uint32_t> fib_memo_runner(fib);
 
-	c.set_in_cache(10, 5, 5);
-
-	try
-	{
-		auto o = c.get_from_cache(5, 5);
-		std::cout << o << std::endl;
-
-		auto missed_cache = c.get_from_cache(6, 6);
-		std::cout << missed_cache << std::endl; // won't work
-	}
-	catch (const std::exception &e)
-	{
-		std::cerr << e.what() << '\n';
-	}
+	auto output = fib_with_memo(6, &fib_memo_runner);
+	std::cout << output << std::endl; // should be thirteen
 }
 
 int main(int argc, char **argv)
 {
-	int *a = new int;
-
-	*a = 5;
-
-	// int **ptr = &a;
-
-	// delete *ptr;
-	delete a;
-
-	std::cout << *a << std::endl;
+	test();
 
 	return 0;
 }

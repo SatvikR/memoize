@@ -9,3 +9,6 @@ obj
 
 .vscode/
 .vs/
+
+Makefile
+*.make
