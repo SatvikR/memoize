@@ -19,7 +19,7 @@ void test()
 
     auto output = fib_memo->run(8);
 
-    std::cout << output << std::endl; // should be thirteen
+    std::cout << output << std::endl; // should be thirty four
 
     delete fib_memo;
 }
