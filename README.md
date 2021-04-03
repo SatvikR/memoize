@@ -40,19 +40,19 @@ static fib_runner *fib_memo;
 
 int fib(uint32_t x)
 {
-	if (x == 0 || x == 1)
-		return 1;
-	else
-		return fib_memo->run(x - 1) + fib_memo->run(x - 2);
+    if (x == 0 || x == 1)
+        return 1;
+    else
+        return fib_memo->run(x - 1) + fib_memo->run(x - 2);
 }
 
 int main()
 {
-	fib_memo = new fib_runner<int, uint32_t>(fib);
+    fib_memo = new fib_runner(fib);
 
-	auto output = fib_memo->run(6);
+    auto output = fib_memo->run(8);
 
-	std::cout << output << std::endl; // should be thirteen
+    std::cout << output << std::endl; // should be thirteen
 
     delete fib_memo;
 }
