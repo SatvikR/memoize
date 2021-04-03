@@ -32,7 +32,7 @@ int main()
 
 ```c++
 #include <iostream>
-#include "memoize.h"
+#include <memoize.h>
 
 typedef memoize_runner<int, uint32_t> fib_runner;
 
