@@ -16,7 +16,7 @@ template <typename R, typename... Args>
 class MemoizeRunner
 {
 public:
-  MemoizeRunner(R (*p_func)(Args...))
+  MemoizeRunner(R (*const p_func)(Args...))
   {
     cache_ = new FunctionCache<R, Args...>; // Intialize cache with template types
     p_func_ = p_func;                       // Create reference to function pointer to use
@@ -27,7 +27,7 @@ public:
     delete cache_;
   }
 
-  R Run(Args... args)
+  R Run(Args... args) const
   {
     R returning;
 

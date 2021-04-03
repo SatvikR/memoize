@@ -23,17 +23,17 @@ class MissedCacheException : public std::exception
 
 // The FunctionCache class holds individual caches for each function that is memoized
 template <typename R, typename... Args> // R = return value, ...Args = arg Types
-class FunctionCache                     // Using _ to make sure there is no naming collision if someone has a Cache class in their application
+class FunctionCache
 {
 public:
-  FunctionCache(){}; // Cache constructor
+  FunctionCache(){}; // empty constructor
 
   // Returns cached value (if exists)
-  R &GetFromCache(Args... args)
+  const R &GetFromCache(const Args &...args) const
   {
-    auto possible_value = m_value_map_.find(std::make_tuple(args...)); // (possibly) get value from map
+    auto possible_value = value_map_.find(std::make_tuple(args...)); // (possibly) get value from map
 
-    if (possible_value == m_value_map_.end()) // if value does not exist yet
+    if (possible_value == value_map_.end()) // if value does not exist yet
     {
       throw MissedCacheException();
     }
@@ -42,13 +42,13 @@ public:
   }
 
   // Inserts args and returning value into the cache
-  void SetInCache(R returning, Args... args)
+  void SetInCache(const R &returning, const Args &...args)
   {
-    m_value_map_[std::make_tuple(args...)] = returning;
+    value_map_[std::make_tuple(args...)] = returning;
   }
 
 private:
-  std::map<std::tuple<Args...>, R> m_value_map_; // Map that maps function args to return values
+  std::map<std::tuple<Args...>, R> value_map_; // Map that maps function args to return values
 };
 
 #endif
