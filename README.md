@@ -59,6 +59,10 @@ int main(int argc, char **argv)
   // Stats: tldr; memoized is ~97% faster
   // Memoized fib with 45 as an arg runs in 0.25 seconds! (win 10, 6 core CPU, 16gb RAM, release mode)
   // Non memoized fib with 45 as an arg runs in 7.8 seconds (same PC specs, still release mode)
+  // Explanation:
+  // Without memoization, the fib function will be called an astounding 3,672,623,805 times
+  // note that this is not the recursive depth reached (recursive depth for fib(n) = n, in this case 45)
+  // Using memoization, the MemoizeRunner.Run method is only being called 89 times, explaing the huge time save
 
   delete fib_runner;
 }
